@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RolesController < ApplicationController
-  before_action :find_role, only: %i[show destroy]
+  before_action :find_role, only: %i[show destroy update]
 
   def index
     @roles = Role.all.to_json({ include: 'permissions' })
@@ -33,6 +33,15 @@ class RolesController < ApplicationController
     else
       data = { 'message' => 'Something went wrong' }
       json_response(data, :unprocessable_entity)
+    end
+  end
+
+  def update
+    if @role.update(role_params)
+      result = @role.to_json({ include: 'permissions' })
+      json_response(result, :created)
+    else
+      json_response('Could not Update', :unprocessable_entity)
     end
   end
 
