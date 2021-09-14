@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_913_224_755) do
+ActiveRecord::Schema.define(version: 20_210_914_151_434) do
   create_table 'manages', force: :cascade do |t|
     t.integer 'role_id', null: false
     t.integer 'permission_id', null: false
@@ -34,6 +34,46 @@ ActiveRecord::Schema.define(version: 20_210_913_224_755) do
     t.datetime 'updated_at', precision: 6, null: false
   end
 
+  create_table 'student_roles', force: :cascade do |t|
+    t.integer 'student_id', null: false
+    t.integer 'role_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['role_id'], name: 'index_student_roles_on_role_id'
+    t.index ['student_id'], name: 'index_student_roles_on_student_id'
+  end
+
+  create_table 'students', force: :cascade do |t|
+    t.string 'first_name'
+    t.string 'last_name'
+    t.string 'email'
+    t.string 'password'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+  end
+
+  create_table 'teacher_roles', force: :cascade do |t|
+    t.integer 'teacher_id', null: false
+    t.integer 'role_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['role_id'], name: 'index_teacher_roles_on_role_id'
+    t.index ['teacher_id'], name: 'index_teacher_roles_on_teacher_id'
+  end
+
+  create_table 'teachers', force: :cascade do |t|
+    t.string 'first_name'
+    t.string 'last_name'
+    t.string 'email'
+    t.string 'password'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+  end
+
   add_foreign_key 'manages', 'permissions'
   add_foreign_key 'manages', 'roles'
+  add_foreign_key 'student_roles', 'roles'
+  add_foreign_key 'student_roles', 'students'
+  add_foreign_key 'teacher_roles', 'roles'
+  add_foreign_key 'teacher_roles', 'teachers'
 end
