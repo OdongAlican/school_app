@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   resources :students
   resources :teachers
   resources :principles
+  resources :staffs
 end
