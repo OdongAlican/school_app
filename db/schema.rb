@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_914_224_028) do
+ActiveRecord::Schema.define(version: 20_210_915_104_259) do
   create_table 'manages', force: :cascade do |t|
     t.integer 'role_id', null: false
     t.integer 'permission_id', null: false
@@ -50,6 +50,18 @@ ActiveRecord::Schema.define(version: 20_210_914_224_028) do
     t.string 'name'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+  end
+
+  create_table 'staffs', force: :cascade do |t|
+    t.string 'last_name'
+    t.string 'first_name'
+    t.string 'email'
+    t.string 'password'
+    t.integer 'role_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.string 'role_type'
+    t.index ['role_id'], name: 'index_staffs_on_role_id'
   end
 
   create_table 'student_roles', force: :cascade do |t|
@@ -92,6 +104,7 @@ ActiveRecord::Schema.define(version: 20_210_914_224_028) do
   add_foreign_key 'manages', 'roles'
   add_foreign_key 'principle_roles', 'principles'
   add_foreign_key 'principle_roles', 'roles'
+  add_foreign_key 'staffs', 'roles'
   add_foreign_key 'student_roles', 'roles'
   add_foreign_key 'student_roles', 'students'
   add_foreign_key 'teacher_roles', 'roles'
