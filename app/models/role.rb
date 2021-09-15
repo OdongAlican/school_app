@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Role < ApplicationRecord
-  has_many :staffs
+  has_many :staffs, dependent: :delete_all
   has_many :manages, dependent: :destroy
   has_many :permissions, through: :manages, dependent: :destroy
   has_many :student_roles, dependent: :destroy
