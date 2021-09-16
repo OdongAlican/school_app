@@ -10,4 +10,6 @@ class Role < ApplicationRecord
   has_many :teachers, through: :teacher_roles, dependent: :destroy
   has_many :principle_roles, dependent: :destroy
   has_many :principles, through: :principle_roles, dependent: :destroy
+  has_many :super_roles, dependent: :destroy
+  has_many :supers, through: :super_roles, dependent: :destroy
 end
