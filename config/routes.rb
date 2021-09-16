@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resources :teachers
   resources :principles
   resources :staffs
+  resources :streams
+  resources :semesters
 end
