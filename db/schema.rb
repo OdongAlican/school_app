@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_915_233_602) do
+ActiveRecord::Schema.define(version: 20_210_916_130_807) do
   create_table 'manages', force: :cascade do |t|
     t.integer 'role_id', null: false
     t.integer 'permission_id', null: false
@@ -105,6 +105,24 @@ ActiveRecord::Schema.define(version: 20_210_915_233_602) do
     t.datetime 'updated_at', precision: 6, null: false
   end
 
+  create_table 'super_roles', force: :cascade do |t|
+    t.integer 'super_id', null: false
+    t.integer 'role_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['role_id'], name: 'index_super_roles_on_role_id'
+    t.index ['super_id'], name: 'index_super_roles_on_super_id'
+  end
+
+  create_table 'supers', force: :cascade do |t|
+    t.string 'email'
+    t.string 'first_name'
+    t.string 'last_name'
+    t.string 'password'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+  end
+
   create_table 'teacher_roles', force: :cascade do |t|
     t.integer 'teacher_id', null: false
     t.integer 'role_id', null: false
@@ -142,6 +160,8 @@ ActiveRecord::Schema.define(version: 20_210_915_233_602) do
   add_foreign_key 'student_roles', 'students'
   add_foreign_key 'student_streams', 'streams'
   add_foreign_key 'student_streams', 'students'
+  add_foreign_key 'super_roles', 'roles'
+  add_foreign_key 'super_roles', 'supers'
   add_foreign_key 'teacher_roles', 'roles'
   add_foreign_key 'teacher_roles', 'teachers'
   add_foreign_key 'teacher_streams', 'streams'
