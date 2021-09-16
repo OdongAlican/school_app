@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_915_104_259) do
+ActiveRecord::Schema.define(version: 20_210_915_233_602) do
   create_table 'manages', force: :cascade do |t|
     t.integer 'role_id', null: false
     t.integer 'permission_id', null: false
@@ -52,6 +52,12 @@ ActiveRecord::Schema.define(version: 20_210_915_104_259) do
     t.datetime 'updated_at', precision: 6, null: false
   end
 
+  create_table 'semesters', force: :cascade do |t|
+    t.string 'name'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+  end
+
   create_table 'staffs', force: :cascade do |t|
     t.string 'last_name'
     t.string 'first_name'
@@ -64,6 +70,14 @@ ActiveRecord::Schema.define(version: 20_210_915_104_259) do
     t.index ['role_id'], name: 'index_staffs_on_role_id'
   end
 
+  create_table 'streams', force: :cascade do |t|
+    t.string 'name'
+    t.integer 'semester_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['semester_id'], name: 'index_streams_on_semester_id'
+  end
+
   create_table 'student_roles', force: :cascade do |t|
     t.integer 'student_id', null: false
     t.integer 'role_id', null: false
@@ -71,6 +85,15 @@ ActiveRecord::Schema.define(version: 20_210_915_104_259) do
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['role_id'], name: 'index_student_roles_on_role_id'
     t.index ['student_id'], name: 'index_student_roles_on_student_id'
+  end
+
+  create_table 'student_streams', force: :cascade do |t|
+    t.integer 'student_id', null: false
+    t.integer 'stream_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['stream_id'], name: 'index_student_streams_on_stream_id'
+    t.index ['student_id'], name: 'index_student_streams_on_student_id'
   end
 
   create_table 'students', force: :cascade do |t|
@@ -91,6 +114,15 @@ ActiveRecord::Schema.define(version: 20_210_915_104_259) do
     t.index ['teacher_id'], name: 'index_teacher_roles_on_teacher_id'
   end
 
+  create_table 'teacher_streams', force: :cascade do |t|
+    t.integer 'teacher_id', null: false
+    t.integer 'stream_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['stream_id'], name: 'index_teacher_streams_on_stream_id'
+    t.index ['teacher_id'], name: 'index_teacher_streams_on_teacher_id'
+  end
+
   create_table 'teachers', force: :cascade do |t|
     t.string 'first_name'
     t.string 'last_name'
@@ -105,8 +137,13 @@ ActiveRecord::Schema.define(version: 20_210_915_104_259) do
   add_foreign_key 'principle_roles', 'principles'
   add_foreign_key 'principle_roles', 'roles'
   add_foreign_key 'staffs', 'roles'
+  add_foreign_key 'streams', 'semesters'
   add_foreign_key 'student_roles', 'roles'
   add_foreign_key 'student_roles', 'students'
+  add_foreign_key 'student_streams', 'streams'
+  add_foreign_key 'student_streams', 'students'
   add_foreign_key 'teacher_roles', 'roles'
   add_foreign_key 'teacher_roles', 'teachers'
+  add_foreign_key 'teacher_streams', 'streams'
+  add_foreign_key 'teacher_streams', 'teachers'
 end
