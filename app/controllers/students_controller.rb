@@ -12,7 +12,7 @@ class StudentsController < ApplicationController
     @student = Student.create(student_params)
     @student.password = random_password
     if @student.save
-      result = @student.to_json({ include: { roles: { include: 'permissions' } } })
+      result = @student.to_json({ include: [:streams, { roles: { include: 'permissions' } }] })
       json_response(result, :created)
     else
       json_response('Error creating Student', :unprocessable_entity)
@@ -20,16 +20,16 @@ class StudentsController < ApplicationController
   end
 
   def show
-    result = @student.to_json({ include: { roles: { include: 'permissions' } } })
+    result = @student.to_json({ include: [:streams, { roles: { include: 'permissions' } }] })
     json_response(result, :created)
   end
 
   def update
     if @student.update(student_params)
-      result = @student.to_json({ include: { roles: { include: 'permissions' } } })
+      result = @student.to_json({ include: [:streams, { roles: { include: 'permissions' } }] })
       json_response(result, :created)
     else
-      json_response('Update errors', :unprocessable_entity)
+      json_response('Cannot update Student', :unprocessable_entity)
     end
   end
 
@@ -52,6 +52,6 @@ class StudentsController < ApplicationController
   end
 
   def student_params
-    params.permit(:first_name, :last_name, :email, :password, role_ids: [])
+    params.permit(:first_name, :last_name, :email, :password, role_ids: [], stream_ids: [])
   end
 end
