@@ -2,7 +2,7 @@
 
 class TeachersController < ApplicationController
   before_action :find_teacher, only: %i[update show destroy]
-  
+
   def index
     @teachers = Teacher.all.limit(10).to_json({ include: { roles: { include: 'permissions' } } })
     json_response(@teachers, :created)
@@ -20,13 +20,13 @@ class TeachersController < ApplicationController
   end
 
   def show
-    result = @teacher.to_json({ include: { roles: { include: 'permissions' } } })
+    result = @teacher.to_json({ include: ['streams', { roles: { include: 'permissions' } }] })
     json_response(result, :created)
   end
 
   def update
     if @teacher.update(teacher_params)
-      result = @teacher.to_json({ include: { roles: { include: 'permissions' } } })
+      result = @teacher.to_json({ include: ['streams', { roles: { include: 'permissions' } }] })
       json_response(result, :created)
     else
       json_response('Update errors', :unprocessable_entity)
@@ -52,6 +52,6 @@ class TeachersController < ApplicationController
   end
 
   def teacher_params
-    params.permit(:first_name, :last_name, :email, :password, role_ids: [])
+    params.permit(:first_name, :last_name, :email, :password, role_ids: [], stream_ids: [])
   end
 end
