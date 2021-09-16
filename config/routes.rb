@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   resources :staffs
   resources :streams
   resources :semesters
+  resources :supers, except: %i[create]
 end
