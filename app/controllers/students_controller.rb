@@ -8,6 +8,18 @@ class StudentsController < ApplicationController
     json_response(@students, :created)
   end
 
+  def login
+    @student = Student.find_by(email: params[:email])
+    password = params.permit(:password)
+    if @student && @student.password == password['password']
+      token = encode_token({ student_id: @student.id }, 'student')
+      data = { student: @student, token: token }
+      json_response(data, :ok)
+    else
+      json_response('Invalid student name or password', :unauthorized)
+    end
+  end
+
   def create
     @student = Student.create(student_params)
     @student.password = random_password

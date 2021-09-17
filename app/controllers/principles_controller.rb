@@ -8,6 +8,18 @@ class PrinciplesController < ApplicationController
     json_response(@principles, :created)
   end
 
+  def login
+    @principle = Principle.find_by(email: params[:email])
+    password = params.permit(:password)
+    if @principle && @principle.password == password['password']
+      token = encode_token({ principle_id: @principle.id }, 'principle')
+      data = { principle: @principle, token: token }
+      json_response(data, :ok)
+    else
+      json_response('Invalid principle name or password', :unauthorized)
+    end
+  end
+
   def create
     @principle = Principle.create(principle_params)
     @principle.password = random_password

@@ -8,6 +8,18 @@ class TeachersController < ApplicationController
     json_response(@teachers, :created)
   end
 
+  def login
+    @teacher = Teacher.find_by(email: params[:email])
+    password = params.permit(:password)
+    if @teacher && @teacher.password == password['password']
+      token = encode_token({ teacher_id: @teacher.id }, 'teacher')
+      data = { teacher: @teacher, token: token }
+      json_response(data, :ok)
+    else
+      json_response('Invalid teacher name or password', :unauthorized)
+    end
+  end
+
   def create
     @teacher = Teacher.create(teacher_params)
     @teacher.password = random_password

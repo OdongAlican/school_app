@@ -8,6 +8,18 @@ class StaffsController < ApplicationController
     json_response(@staffs, :created)
   end
 
+  def login
+    @staff = Staff.find_by(email: params[:email])
+    password = params.permit(:password)
+    if @staff && @staff.password == password['password']
+      token = encode_token({ staff_id: @staff.id }, 'staff')
+      data = { staff: @staff, token: token }
+      json_response(data, :ok)
+    else
+      json_response('Invalid staff name or password', :unauthorized)
+    end
+  end
+
   def create
     @staff = Staff.create(staff_params)
     @staff.password = random_password
