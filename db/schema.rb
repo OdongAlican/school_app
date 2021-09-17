@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_916_130_807) do
+ActiveRecord::Schema.define(version: 20_210_916_212_513) do
   create_table 'manages', force: :cascade do |t|
     t.integer 'role_id', null: false
     t.integer 'permission_id', null: false
