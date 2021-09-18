@@ -2,6 +2,7 @@
 
 class SupersController < ApplicationController
   before_action :find_super, only: %i[show]
+  before_action :authorized, except: %i[login]
 
   def index
     @supers = Super.all
@@ -12,7 +13,7 @@ class SupersController < ApplicationController
     @super = Super.find_by(email: params[:email])
     password = params.permit(:password)
     if @super && @super.password == password['password']
-      token = encode_token({ super_id: @super.id }, 'super')
+      token = encode_token({ super_id: @super.id })
       data = { super: @super, token: token }
       json_response(data, :ok)
     else
