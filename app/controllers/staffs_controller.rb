@@ -93,9 +93,3 @@ class StaffsController < ApplicationController
     params.permit(:first_name, :last_name, :email, :password, :role_type, :role_id)
   end
 end
-
-# lorenzo@gmail.com
-# Lsu4t8hfm2
-
-# "email": "rosemary@gmail.com",
-# "password": "czQF8G1UPn",
