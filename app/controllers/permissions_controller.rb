@@ -2,6 +2,7 @@
 
 class PermissionsController < ApplicationController
   before_action :find_permission, only: %i[show destroy]
+  before_action :authorized
 
   def index
     @permissions = Permission.all
