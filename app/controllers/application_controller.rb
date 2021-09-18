@@ -33,9 +33,15 @@ class ApplicationController < ActionController::API
       elsif user_route == 'teacher_id'
         user_id = decoded_token[0]['teacher_id']
         @user = Teacher.find_by(id: user_id)
-      elsif user_route = 'principle_id'
+      elsif user_route == 'principle_id'
         user_id = decoded_token[0]['principle_id']
         @user = Principle.find_by(id: user_id)
+      elsif user_route == 'staff_id'
+        user_id = decoded_token[0]['staff_id']
+        @user = Staff.find_by(id: user_id)
+      elsif user_route == 'super_id'
+        user_id = decoded_token[0]['super_id']
+        @user = Super.find_by(id: user_id)
       end
     end
   end
