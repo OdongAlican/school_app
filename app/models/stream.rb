@@ -7,4 +7,6 @@ class Stream < ApplicationRecord
   has_many :teachers, through: :teacher_streams, dependent: :destroy
   has_many :student_streams, dependent: :destroy
   has_many :students, through: :student_streams, dependent: :destroy
+  has_many :principle_streams, dependent: :destroy
+  has_many :principles, through: :principle_streams, dependent: :destroy
 end
