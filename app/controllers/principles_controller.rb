@@ -2,6 +2,7 @@
 
 class PrinciplesController < ApplicationController
   before_action :find_principle, only: %i[show destroy update]
+  before_action :authorized, except: %i[login]
 
   def index
     @principles = Principle.all.limit(10).to_json({ include: { roles: { include: 'permissions' } } })
@@ -12,7 +13,7 @@ class PrinciplesController < ApplicationController
     @principle = Principle.find_by(email: params[:email])
     password = params.permit(:password)
     if @principle && @principle.password == password['password']
-      token = encode_token({ principle_id: @principle.id }, 'principle')
+      token = encode_token({ principle_id: @principle.id })
       data = { principle: @principle, token: token }
       json_response(data, :ok)
     else
