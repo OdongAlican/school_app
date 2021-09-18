@@ -2,6 +2,7 @@
 
 class RolesController < ApplicationController
   before_action :find_role, only: %i[show destroy update]
+  before_action :authorized
 
   def index
     @roles = Role.all.to_json({ include: 'permissions' })
