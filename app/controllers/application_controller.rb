@@ -3,9 +3,9 @@
 class ApplicationController < ActionController::API
   include Response
   include Password
-  @user_current = ''
-  def encode_token(payload, user)
-    @user_current = user
+  include Authorize
+
+  def encode_token(payload)
     JWT.encode(payload, 's3cr3t')
   end
 
@@ -25,23 +25,22 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    p '.........................'
-    p '.........................'
-    p @user_current
-    p '.........................'
-    p '.........................'
     if decoded_token
-      user_id = decoded_token[0]['user_id']
-      if @user_current == 'student'
+      user_route = decoded_token[0].keys[0]
+      if user_route == 'student_id'
+        user_id = decoded_token[0]['student_id']
         @user = Student.find_by(id: user_id)
-      elsif @user_current == 'teacher'
+      elsif user_route == 'teacher_id'
+        user_id = decoded_token[0]['teacher_id']
         @user = Teacher.find_by(id: user_id)
+      elsif user_route = 'principle_id'
+        user_id = decoded_token[0]['principle_id']
+        @user = Principle.find_by(id: user_id)
       end
     end
   end
 
   def logged_in?
-    current_user
     !!current_user
   end
 
