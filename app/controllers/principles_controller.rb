@@ -93,6 +93,3 @@ class PrinciplesController < ApplicationController
     params.permit(:first_name, :last_name, :email, :password, role_ids: [])
   end
 end
-
-# "email" : "justine@gmail.com",
-# "password": "lNCvaUbm0A"
