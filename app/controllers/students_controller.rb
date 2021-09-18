@@ -29,6 +29,8 @@ class StudentsController < ApplicationController
   def create
     if current_user.class.name == 'Principle' && @user_roles_list.include?('Admin')
       @student = Student.create(student_params)
+      @student.principle_ids = [current_user.id]
+      @student.stream_ids = []
       @student.password = random_password
       if @student.save
         result = @student.to_json({ include: [:streams, { roles: { include: 'permissions' } }] })
@@ -90,9 +92,7 @@ class StudentsController < ApplicationController
   end
 
   def student_params
-    params.permit(:first_name, :last_name, :email, :password, role_ids: [], stream_ids: [])
+    params.permit(:first_name, :last_name, :email, :password, role_ids: [], stream_ids: [], principle_ids: [])
   end
 end
 
-# johndoe@gmail.com
-# qSpbLK06Tf
