@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_916_212_513) do
+ActiveRecord::Schema.define(version: 20_210_918_200_028) do
   create_table 'manages', force: :cascade do |t|
     t.integer 'role_id', null: false
     t.integer 'permission_id', null: false
@@ -35,6 +35,51 @@ ActiveRecord::Schema.define(version: 20_210_916_212_513) do
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['principle_id'], name: 'index_principle_roles_on_principle_id'
     t.index ['role_id'], name: 'index_principle_roles_on_role_id'
+  end
+
+  create_table 'principle_semesters', force: :cascade do |t|
+    t.integer 'principle_id', null: false
+    t.integer 'semester_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['principle_id'], name: 'index_principle_semesters_on_principle_id'
+    t.index ['semester_id'], name: 'index_principle_semesters_on_semester_id'
+  end
+
+  create_table 'principle_staffs', force: :cascade do |t|
+    t.integer 'principle_id', null: false
+    t.integer 'staff_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['principle_id'], name: 'index_principle_staffs_on_principle_id'
+    t.index ['staff_id'], name: 'index_principle_staffs_on_staff_id'
+  end
+
+  create_table 'principle_streams', force: :cascade do |t|
+    t.integer 'principle_id', null: false
+    t.integer 'stream_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['principle_id'], name: 'index_principle_streams_on_principle_id'
+    t.index ['stream_id'], name: 'index_principle_streams_on_stream_id'
+  end
+
+  create_table 'principle_students', force: :cascade do |t|
+    t.integer 'principle_id', null: false
+    t.integer 'student_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['principle_id'], name: 'index_principle_students_on_principle_id'
+    t.index ['student_id'], name: 'index_principle_students_on_student_id'
+  end
+
+  create_table 'principle_teachers', force: :cascade do |t|
+    t.integer 'principle_id', null: false
+    t.integer 'teacher_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['principle_id'], name: 'index_principle_teachers_on_principle_id'
+    t.index ['teacher_id'], name: 'index_principle_teachers_on_teacher_id'
   end
 
   create_table 'principles', force: :cascade do |t|
@@ -68,6 +113,15 @@ ActiveRecord::Schema.define(version: 20_210_916_212_513) do
     t.datetime 'updated_at', precision: 6, null: false
     t.string 'role_type'
     t.index ['role_id'], name: 'index_staffs_on_role_id'
+  end
+
+  create_table 'stream_students', force: :cascade do |t|
+    t.integer 'stream_id', null: false
+    t.integer 'student_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['stream_id'], name: 'index_stream_students_on_stream_id'
+    t.index ['student_id'], name: 'index_stream_students_on_student_id'
   end
 
   create_table 'streams', force: :cascade do |t|
@@ -154,7 +208,19 @@ ActiveRecord::Schema.define(version: 20_210_916_212_513) do
   add_foreign_key 'manages', 'roles'
   add_foreign_key 'principle_roles', 'principles'
   add_foreign_key 'principle_roles', 'roles'
+  add_foreign_key 'principle_semesters', 'principles'
+  add_foreign_key 'principle_semesters', 'semesters'
+  add_foreign_key 'principle_staffs', 'principles'
+  add_foreign_key 'principle_staffs', 'staffs'
+  add_foreign_key 'principle_streams', 'principles'
+  add_foreign_key 'principle_streams', 'streams'
+  add_foreign_key 'principle_students', 'principles'
+  add_foreign_key 'principle_students', 'students'
+  add_foreign_key 'principle_teachers', 'principles'
+  add_foreign_key 'principle_teachers', 'teachers'
   add_foreign_key 'staffs', 'roles'
+  add_foreign_key 'stream_students', 'streams'
+  add_foreign_key 'stream_students', 'students'
   add_foreign_key 'streams', 'semesters'
   add_foreign_key 'student_roles', 'roles'
   add_foreign_key 'student_roles', 'students'

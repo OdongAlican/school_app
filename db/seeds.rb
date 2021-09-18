@@ -8,8 +8,34 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# Destroy any permission if it exits
-# Permission.destroy_all
+# Destroy any permission if they exits
+Permission.destroy_all
+
+# Destroy any roles if they exits
+Role.destroy_all
+
+# Create a List of roles
+Role.create([
+              { name: 'Student' },
+              { name: 'Staff' },
+              { name: 'Admin' },
+              { name: 'Contractor' }
+            ])
+
+# Create a List of permission
+Permission.create([
+                    { name: 'Add Classes' },
+                    { name: 'Add Students' },
+                    { name: 'Hire Staff' },
+                    { name: 'View records' },
+                    { name: 'Enroll in school' },
+                    { name: 'Enroll in classes ' },
+                    { name: 'View Data Points' },
+                    { name: 'Assign teachers to classes' },
+                    { name: 'Display total number of classes' },
+                    { name: 'Display total number of students' },
+                    { name: 'Display Students per classes' }
+                  ])
 
 # Destroy any role if it exits
 roles_array = []
