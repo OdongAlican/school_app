@@ -6,6 +6,8 @@ class Teacher < ApplicationRecord
   has_many :roles, through: :teacher_roles, dependent: :destroy
   has_many :teacher_streams, dependent: :destroy
   has_many :streams, through: :teacher_streams, dependent: :destroy
+  has_many :principle_teachers, dependent: :destroy
+  has_many :principles, through: :principle_teachers, dependent: :destroy
 
   def validate_streams_per_semester
     if streams.length > 3
