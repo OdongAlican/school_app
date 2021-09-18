@@ -28,7 +28,7 @@ class TeachersController < ApplicationController
   end
 
   def create
-    if @user_roles_list.include? 'Admin' && current_user.class.name == 'Principle'
+    if current_user.class.name == 'Principle' && @user_roles_list.include?('Admin')
       @teacher = Teacher.create(teacher_params)
       @teacher.password = random_password
       if @teacher.save
@@ -43,42 +43,45 @@ class TeachersController < ApplicationController
   end
 
   def show
-    result = @teacher.to_json({ include: ['streams', { roles: { include: 'permissions' } }] })
-    json_response(result, :created)
-  end
-
-  def update
-    if @teacher.update(teacher_params)
+    if (@user_roles_list & %w[Staff Admin]).any?
       result = @teacher.to_json({ include: ['streams', { roles: { include: 'permissions' } }] })
       json_response(result, :created)
     else
-      json_response('Update errors', :unprocessable_entity)
+      json_response('Not authorized', :unauthorized)
+    end
+  end
+
+  def update
+    if (@user_roles_list & %w[Staff Admin]).any?
+      if @teacher.update(teacher_params)
+        result = @teacher.to_json({ include: ['streams', { roles: { include: 'permissions' } }] })
+        json_response(result, :created)
+      else
+        json_response('Update errors', :unprocessable_entity)
+      end
+    else
+      json_response('Not authorized', :unauthorized)
     end
   end
 
   def destroy
-    if @teacher.destroy
-      data = { 'message' => 'student destroyed' }
-      json_response(data, :no_content)
+    if current_user.class.name == 'Principle' && @user_roles_list.include?('Admin')
+      if @teacher.destroy
+        data = { 'message' => 'student destroyed' }
+        json_response(data, :no_content)
+      else
+        data = { 'message' => 'Something went wrong' }
+        json_response(data, :no_content)
+      end
     else
-      data = { 'message' => 'Something went wrong' }
-      json_response(data, :no_content)
+      json_response('Not authorized', :unauthorized)
     end
   end
 
   private
 
   def user_roles_list
-    if current_user.class.name == 'Teacher'
-      teacher = Teacher.find_by(id: current_user['id'])
-      @user_roles_list = user_roles(teacher)
-    elsif current_user.class.name == 'Student'
-      student = Student.find_by(id: current_user['id'])
-      @user_roles_list = user_roles(student)
-    elsif current_user.class.name == 'Principle'
-      principle = Principle.find_by(id: current_user['id'])
-      @user_roles_list = user_roles(principle)
-    end
+    determine_type(current_user)
   end
 
   def find_teacher
@@ -91,3 +94,6 @@ class TeachersController < ApplicationController
     params.permit(:first_name, :last_name, :email, :password, role_ids: [], stream_ids: [])
   end
 end
+
+# mikepaul@gmail.com
+# nsedlLSWtj
