@@ -2,6 +2,7 @@
 
 class StudentsController < ApplicationController
   before_action :find_student, only: %i[update show destroy]
+  before_action :authorized, except: %i[login]
 
   def index
     @students = Student.all.limit(10).to_json({ include: { roles: { include: 'permissions' } } })
@@ -12,7 +13,7 @@ class StudentsController < ApplicationController
     @student = Student.find_by(email: params[:email])
     password = params.permit(:password)
     if @student && @student.password == password['password']
-      token = encode_token({ student_id: @student.id }, 'student')
+      token = encode_token({ student_id: @student.id })
       data = { student: @student, token: token }
       json_response(data, :ok)
     else
